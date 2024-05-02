@@ -4,11 +4,13 @@ pipeline {
     // string(name: 'DOCKER_BASE', defaultValue: 'ghidra-base')
     string(name: 'DOCKER_BUILD', defaultValue: 'ghidra-build')
     string(name: 'DOCKER_TEST', defaultValue: 'ghidra-test')
+    string(name: 'DOCKER_BASE', defaultValue: 'ghidra-base')
   }
   stages {
     stage('Build') {
       agent any
       steps {
+        sh "docker build -t ${params.DOCKER_BASE} --target base ."
         sh "docker build -t ${params.DOCKER_BUILD} --target build ."
       }
     }
