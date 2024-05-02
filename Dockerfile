@@ -2,10 +2,10 @@ FROM fedora:latest as base
 
 RUN dnf -y update && \
     dnf -y install java-17-openjdk-devel gcc g++ git zip wget
-RUN wget https://services.gradle.org/distributions/gradle-8.7-bin.zip
+RUN wget https://services.gradle.org/distributions/gradle-7.6.3-bin.zip
 RUN mkdir -p /opt/gradle
-RUN unzip -d /opt/gradle gradle-8.7-bin.zip
-RUN rm gradle-8.7-bin.zip
+RUN unzip -d /opt/gradle gradle-7.6.3-bin.zip
+RUN rm gradle-7.6.3-bin.zip
 
 COPY . /ghidra
 
