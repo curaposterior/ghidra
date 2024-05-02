@@ -1,7 +1,7 @@
 FROM fedora:latest as base
 
 RUN dnf -y update && \
-    dnf -y install java-17-openjdk-devel gcc g++ git zip wget
+    dnf -y install java-17-openjdk-devel gcc g++ git zip wget python3
 RUN wget https://services.gradle.org/distributions/gradle-7.6.3-bin.zip
 RUN mkdir -p /opt/gradle
 RUN unzip -d /opt/gradle gradle-7.6.3-bin.zip
@@ -11,8 +11,8 @@ COPY . /ghidra
 
 FROM base as build
 WORKDIR /ghidra
-RUN /opt/gradle/gradle-8.7/bin/gradle -I gradle/support/fetchDependencies.gradle init
-RUN /opt/gradle/gradle-8.7/bin/gradle buildGhidra
+RUN /opt/gradle/gradle-7.6.3/bin/gradle -I gradle/support/fetchDependencies.gradle init
+RUN /opt/gradle/gradle-7.6.3/bin/gradle buildGhidra
 RUN ls build/dist
 
 # https://github.com/NationalSecurityAgency/ghidra/blob/master/DevGuide.md
