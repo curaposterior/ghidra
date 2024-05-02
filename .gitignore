@@ -1,6 +1,6 @@
 excludedFiles.txt
 ghidra.repos.config
-
+.vscode/
 # Misc files produced while executing application
 repositories/
 dependencies/

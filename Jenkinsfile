@@ -22,11 +22,13 @@ pipeline {
     }
     stage('Deploy') {
       agent any
-      script {
-        def containerId = sh(script: "docker run -d ${params.DOCKER_NAME} tail -f /dev/null", returnStdout: true).trim()
-        sh "docker cp ${containerId}:/ghidra/build/dist/ghidra.zip ."
-        sh "docker stop ${containerId}"
-        sh "docker rm ${containerId}"
+      steps {
+          script {
+          def containerId = sh(script: "docker run -d ${params.DOCKER_NAME} tail -f /dev/null", returnStdout: true).trim()
+          sh "docker cp ${containerId}:/ghidra/build/dist/ghidra.zip ."
+          sh "docker stop ${containerId}"
+          sh "docker rm ${containerId}"
+        }
       }
     }
     stage('Publish') {
