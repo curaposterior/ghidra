@@ -10,8 +10,8 @@ pipeline {
     stage('Build') {
       agent any
       steps {
-        sh "docker build -t ${params.DOCKER_BASE} --target=base ."
-        sh "docker build -t ${params.DOCKER_BUILD} --target=build ."
+        sh "docker build -t ${params.DOCKER_BASE} --no-cache --target=base ."
+        sh "docker build -t ${params.DOCKER_BUILD} --no-cache --target=build ."
       }
     }
     stage('Test') {
