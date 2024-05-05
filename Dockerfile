@@ -1,7 +1,7 @@
 FROM fedora:latest as base
 
 RUN dnf -y update && \
-    dnf -y install java-17-openjdk-devel gcc g++ git zip wget python3 python3-pip
+    dnf -y install java-17-openjdk-devel gcc g++ git zip wget python3 python3-pip libc-dev make
 
 ARG GRADLE_VERSION=8.7
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip   
