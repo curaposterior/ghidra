@@ -14,7 +14,7 @@ RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle -I gradle/support/fetchDepen
 
 FROM base as build
 WORKDIR /ghidra
-RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle buildGhidra -x Framework-Debugging:*
+RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle buildGhidra
 
 RUN ls build/dist
 
