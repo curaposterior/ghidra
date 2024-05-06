@@ -4,7 +4,8 @@ RUN dnf -y update && \
     dnf -y install java-17-openjdk-devel gcc g++ git zip wget python3 python3-pip glibc-devel
 
 ARG GRADLE_VERSION=7.3.3
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-3.fc39.x86_64
+ARG export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+ENV JAVA_HOME ${JAVA_HOME}
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip   
 RUN mkdir -p /opt/gradle
 RUN unzip -d /opt/gradle gradle-${GRADLE_VERSION}-bin.zip
