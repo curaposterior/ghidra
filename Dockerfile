@@ -23,7 +23,7 @@ FROM build as test
 WORKDIR /ghidra
 RUN Xvfb :99 -nolisten tcp &
 RUN export DISPLAY=:99
-RUN /opt/gradle/gradle-8.7/bin/gradle unitTestReport
+RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle unitTestReport
 
 FROM build as deploy
 
