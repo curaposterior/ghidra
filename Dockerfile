@@ -1,11 +1,11 @@
-FROM fedora:latest as base
+FROM fedora:39 as base
 
 RUN dnf -y update && \
     dnf -y install java-17-openjdk-devel gcc g++ git zip wget python3 python3-pip glibc-devel
 
-ARG GRADLE_VERSION=7.3.3
-ARG export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-ENV JAVA_HOME ${JAVA_HOME}
+ARG GRADLE_VERSION=8.7
+# ARG export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+# ENV JAVA_HOME ${JAVA_HOME}
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip   
 RUN mkdir -p /opt/gradle
 RUN unzip -d /opt/gradle gradle-${GRADLE_VERSION}-bin.zip
