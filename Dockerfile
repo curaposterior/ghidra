@@ -4,8 +4,6 @@ RUN dnf -y update && \
     dnf -y install java-17-openjdk-devel gcc g++ git zip wget python3 python3-pip glibc-devel
 
 ARG GRADLE_VERSION=8.7
-# ARG export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-# ENV JAVA_HOME ${JAVA_HOME}
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip   
 RUN mkdir -p /opt/gradle
 RUN unzip -d /opt/gradle gradle-${GRADLE_VERSION}-bin.zip
@@ -17,14 +15,13 @@ RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle -I gradle/support/fetchDepen
 FROM base as build
 WORKDIR /ghidra
 RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle buildGhidra
-RUN ls build/dist
 
 FROM build as test
 
 WORKDIR /ghidra
 RUN Xvfb :99 -nolisten tcp &
 RUN export DISPLAY=:99
-RUN /opt/gradle/${GRADLE_VERSION}/bin/gradle unitTestReport
+RUN /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle unitTestReport
 
 FROM build as deploy
 
