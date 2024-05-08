@@ -30,7 +30,7 @@ pipeline {
       agent any
       steps {
         script {
-          def containerId = sh(script: "docker run --rm -d ${params.DOCKER_BUILD} /bin/bash", returnStdout: true).trim()
+          def containerId = sh(script: "docker run --rm -d ${params.DOCKER_BUILD} tail -f /dev/null", returnStdout: true).trim()
           sh "docker cp ${containerId}:/ghidra/build/dist/ghidra_*.zip ."
           sh "mv ghidra_*.zip ghidra.zip"
           sh "docker stop ${containerId}"
