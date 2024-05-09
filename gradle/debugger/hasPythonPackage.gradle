@@ -13,36 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-def checkPythonVersion(String pyCmd) {
-	try {
-		def stdout = new ByteArrayOutputStream()
-		exec {
-			commandLine pyCmd, "-c", "import sys; print('{0}.{1}'.format(*sys.version_info))"
-			standardOutput = stdout
-			errorOutput = OutputStream.nullOutputStream()
-		}
-		def version = "$stdout".strip()
-		return version
-	}
-	catch (Exception e) {
-		return "ABSENT"
-	}
-}
-
-ext.SUPPORTED_PY_VERSIONS = ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
-
-def findPython3() {
-	for (pyCmd in ['py', 'python3', 'python']) {
-		if (checkPythonVersion(pyCmd) in SUPPORTED_PY_VERSIONS) {
-			return pyCmd
-		}
-	}
-	// Don't fail until task execution. Just let "python3" fail.
-	return 'python3'
-}
-
-ext.PYTHON3 = findPython3()
+ 
+/**
+ * NOTE: Supported Python3 command is established by root project build.gradle
+ */
 
 ext.findPyDep = { name ->
     File inDeps = file("${DEPS_DIR}/${project.name}/${name}")
@@ -62,8 +36,6 @@ task assemblePyPackage(type: Copy) {
 	into "build/pypkg/"
 }
 
-rootProject.tasks.prepDev.dependsOn(assemblePyPackage)
-
 task buildPyPackage {
 	ext.dist = { file("build/pypkg/dist") }
 	inputs.files(assemblePyPackage)
@@ -73,7 +45,7 @@ task buildPyPackage {
 		File setuptools = project(":Debugger-rmi-trace").findPyDep(".")
 		exec {
 			workingDir { "build/pypkg" }
-			commandLine	PYTHON3, "-m", "pip"
+			commandLine	rootProject.PYTHON3, "-m", "pip"
 			args "wheel", "-w", "dist/", "--no-index", "--no-deps"
 			args "-f", setuptools
 			args "."
