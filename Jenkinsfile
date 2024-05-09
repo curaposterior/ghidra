@@ -41,7 +41,7 @@ pipeline {
   }
   post {
         success {
-            archiveArtifacts artifacts: '**/*.zip', allowEmptyArchive: true
+            archiveArtifacts artifacts: './*.zip', allowEmptyArchive: true
         }
         
         cleanup {
