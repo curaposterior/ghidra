@@ -50,6 +50,7 @@ pipeline {
                 sh "docker rmi -f ${params.DOCKER_BUILD}"
                 sh "docker rmi -f ${params.DOCKER_TEST}"
                 sh "docker rmi -f ${params.DOCKER_DEPLOY}"
+                sh "docker system prune -f"
             }
         }
     }
