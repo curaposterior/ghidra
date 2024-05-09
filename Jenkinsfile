@@ -36,22 +36,18 @@ pipeline {
           sh "docker cp ${containerId}:/ghidra.zip ."
           sh "docker stop ${containerId}"
           sh "pwd && ls -la"
+          archiveArtifacts artifacts: 'ghidra.zip', allowEmptyArchive: true
         }
       }
     }
   }
   post {
-        success {
-            archiveArtifacts artifacts: '*.zip', allowEmptyArchive: true
-        }
-        
         cleanup {
             script {
                 // sh "docker rmi -f ${params.DOCKER_BASE}"
                 // sh "docker rmi -f ${params.DOCKER_BUILD}"
                 // sh "docker rmi -f ${params.DOCKER_TEST}"
-                sh "ls -la"
-                sh "pwd"
+                sh "echo l"
             }
         }
     }
