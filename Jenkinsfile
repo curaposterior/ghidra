@@ -10,7 +10,8 @@ pipeline {
     stage('Build') {
       agent any
       steps {
-        sh "docker build -t ${params.DOCKER_BASE} --no-cache --target=base ."
+        // sh "docker build -t ${params.DOCKER_BASE} --no-cache --target=base ."
+        sh "docker build -t ${params.DOCKER_BASE} --target=base ."
         sh "docker build -t ${params.DOCKER_BUILD} --target=build ."
       }
     }
@@ -31,8 +32,8 @@ pipeline {
       steps {
         script {
           def containerId = sh(script: "docker run --rm -d ${params.DOCKER_BUILD} tail -f /dev/null", returnStdout: true).trim()
-          sh "docker exec ${containerId} bash -c 'mv /ghidra/build/dist/ghidra_*.zip ghidra.zip'"
-          sh "docker cp ${containerId}:/ghidra/build/dist/ghidra.zip ."
+          sh "docker exec ${containerId} bash -c 'mv /ghidra/build/dist/ghidra_*.zip /ghidra.zip'"
+          sh "docker cp ${containerId}:/ghidra.zip ."
           sh "docker stop ${containerId}"
         }
       }
@@ -45,9 +46,10 @@ pipeline {
         
         cleanup {
             script {
-                docker.image("${params.DOCKER_BASE}").remove()
-                docker.image("${params.DOCKER_BUILD}").remove()
-                docker.image("${params.DOCKER_TEST}").remove()
+                // sh "docker rmi -f ${params.DOCKER_BASE}"
+                // sh "docker rmi -f ${params.DOCKER_BUILD}"
+                // sh "docker rmi -f ${params.DOCKER_TEST}"
+                sh "echo success"
             }
         }
     }
