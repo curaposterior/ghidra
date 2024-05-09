@@ -10,8 +10,7 @@ pipeline {
     stage('Build') {
       agent any
       steps {
-        // sh "docker build -t ${params.DOCKER_BASE} --no-cache --target=base ."
-        sh "docker build -t ${params.DOCKER_BASE} --target=base ."
+        sh "docker build -t ${params.DOCKER_BASE} --no-cache --target=base ."
         sh "docker build -t ${params.DOCKER_BUILD} --target=build ."
       }
     }
@@ -35,19 +34,22 @@ pipeline {
           sh "docker exec ${containerId} bash -c 'mv /ghidra/build/dist/ghidra_*.zip /ghidra.zip'"
           sh "docker cp ${containerId}:/ghidra.zip ."
           sh "docker stop ${containerId}"
-          sh "pwd && ls -la"
           archiveArtifacts artifacts: 'ghidra.zip', allowEmptyArchive: true
         }
       }
     }
   }
   post {
+        always {
+            deleteDir()
+        }
+
         cleanup {
             script {
-                // sh "docker rmi -f ${params.DOCKER_BASE}"
-                // sh "docker rmi -f ${params.DOCKER_BUILD}"
-                // sh "docker rmi -f ${params.DOCKER_TEST}"
-                sh "echo l"
+                sh "docker rmi -f ${params.DOCKER_BASE}"
+                sh "docker rmi -f ${params.DOCKER_BUILD}"
+                sh "docker rmi -f ${params.DOCKER_TEST}"
+                sh "docker rmi -f ${params.DOCKER_DEPLOY}"
             }
         }
     }
