@@ -31,7 +31,7 @@ pipeline {
       steps {
         script {
           def containerId = sh(script: "docker run --rm -d ${params.DOCKER_BUILD} tail -f /dev/null", returnStdout: true).trim()
-          sh "docker exec ${containerId} mv /ghidra/build/dist/ghidra_*.zip ghidra.zip"
+          sh "docker exec ${containerId} bash -c 'mv /ghidra/build/dist/ghidra_*.zip ghidra.zip'"
           sh "docker cp ${containerId}:/ghidra/build/dist/ghidra.zip ."
           sh "docker stop ${containerId}"
         }
